@@ -11,9 +11,9 @@ interface Props {
 	meta: SiteMeta;
 }
 
-const {
-	meta: { articleDate, description = siteConfig.description, ogImage, title },
-} = Astro.props;
+const { meta = {} } = Astro.props;
+
+const { articleDate, description = siteConfig.description, ogImage, title } = meta;
 ---
 
 <html class="scroll-smooth" lang={siteConfig.lang}>
@@ -21,13 +21,17 @@ const {
 		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
 	</head>
 	<body
-		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-3xl flex-col px-4 pt-16 font-mono text-sm font-normal antialiased sm:px-8"
+		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-3xl flex-col px-4 pt-16 font-sans text-sm font-normal antialiased sm:px-8"
 	>
 		<ThemeProvider />
 		<SkipLink />
 		<Header />
-		<main id="main">
-			<slot />
+		<main id="main" class="flex-1">
+			<article
+				class="prose prose-sm dark:prose-invert prose-headings:font-semibold prose-headings:text-accent-2 prose-a:text-accent-2 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-h1:text-2xl prose-h2:text-xl prose-p:text-base max-w-none"
+			>
+				<slot />
+			</article>
 		</main>
 		<Footer />
 	</body>

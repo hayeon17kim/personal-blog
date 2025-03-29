@@ -3,8 +3,12 @@
 	const lightModePref = window.matchMedia("(prefers-color-scheme: light)");
 
 	function getUserPref() {
+		// First check system preference
+		const systemPreference = lightModePref.matches ? "light" : "dark";
+		// Then check stored preference
 		const storedTheme = typeof localStorage !== "undefined" && localStorage.getItem("theme");
-		return storedTheme || (lightModePref.matches ? "light" : "dark");
+		// Return stored preference if it exists, otherwise use system preference
+		return storedTheme || systemPreference;
 	}
 
 	function setTheme(newTheme) {
@@ -15,12 +19,6 @@
 		}
 
 		const root = document.documentElement;
-
-		// root already set to newTheme, exit early
-		if (newTheme === root.getAttribute("data-theme")) {
-			return;
-		}
-
 		root.setAttribute("data-theme", newTheme);
 
 		if (typeof localStorage !== "undefined") {
@@ -39,6 +37,6 @@
 		setTheme(e.detail.theme);
 	});
 
-	// listen for prefers-color-scheme change.
-	lightModePref.addEventListener("change", (e) => setTheme(e.matches ? "light" : "dark"));
+	// listen for prefers-color-scheme change
+	lightModePref.addEventListener("change", (e) => setTheme(getUserPref()));
 </script>
