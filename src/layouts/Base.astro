@@ -11,9 +11,8 @@ interface Props {
 	meta: SiteMeta;
 }
 
-const { meta = {} } = Astro.props;
-
-const { articleDate, description = siteConfig.description, ogImage, title } = meta;
+const { meta = { title: siteConfig.title } } = Astro.props;
+const { articleDate, description = siteConfig.description, ogImage, title = siteConfig.title } = meta;
 ---
 
 <html class="scroll-smooth" lang={siteConfig.lang}>
